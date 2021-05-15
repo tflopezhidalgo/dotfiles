@@ -24,7 +24,7 @@ MiscRewrapOnResize=TRUE
 MiscUseShiftArrowsToScroll=FALSE
 MiscSlimTabs=TRUE
 MiscNewTabAdjacent=FALSE
-BackgroundDarkness=0,30000
+BackgroundDarkness=0,900000
 BackgroundImageFile=/home/tomas/Escritorio/Captura de pantalla_2020-04-19_23-30-31.png
 BackgroundImageStyle=TERMINAL_BACKGROUND_STYLE_SCALED
 TextBlinkMode=TERMINAL_TEXT_BLINK_MODE_FOCUSED
@@ -41,3 +41,4 @@ ColorCursorUseDefault=FALSE
 ColorForeground=#ebdbb2
 FontName=Hack Bold 10
 FontAllowBold=FALSE
+
