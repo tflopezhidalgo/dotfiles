@@ -193,3 +193,6 @@ if [[ -z "$(ssh-add -l | grep RSA)" ]]; then
         ssh-add ~/.ssh/id_rsa
 fi
 . "$HOME/.cargo/env"
+
+
+. <(inv --print-completion-script bash)

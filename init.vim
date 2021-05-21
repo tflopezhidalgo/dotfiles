@@ -61,6 +61,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 " colors
 Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
 
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -171,7 +172,6 @@ let g:airline#extensions#tabline#show_tab_nr = 1       " disable tab numbers
 let g:gruvbox_italic= 1
 let g:gruvbox_italicize_comments = 1
 let g:gruvbox_undercurl = 1
-let g:gruvbox_bold = 1
 let g:gruvbox_contrast_dark = "hard"
 
 "nerdtree
@@ -183,12 +183,12 @@ map ,t :NERDTreeToggle<CR>
 " Basic config
 set completeopt+=preview
 set completeopt+=noinsert
-set background=dark
 set wildmode=longest,list
 set incsearch nohlsearch
 set directory^=$HOME/.config/nvim/tmp/
 set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
 set relativenumber number
+set background=dark
 set termguicolors
 set cursorline
 set scrolloff=10
@@ -219,8 +219,9 @@ map TT :tabnew
 map tt :exe "tabn ".g:lasttab<CR>
 
 " Moverse entre pestañas
-map tn :tabn<CR>
-map tp :tabp<CR>
+map bn :bn<CR>
+map bp :bp<CR>
+map bd :bd<CR>
 
 " Mover y modificar pestañas
 map tm :tabm 
