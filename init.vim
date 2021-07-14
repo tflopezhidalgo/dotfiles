@@ -169,7 +169,7 @@ let g:airline#extensions#tabline#show_tab_nr = 1       " disable tab numbers
 
 "gruvbox
 let g:gruvbox_italic= 1
-let g:gruvbox_italicize_comments = 1
+let g:gruvbox_italicize_comments = 0
 let g:gruvbox_undercurl = 1
 let g:gruvbox_contrast_dark = "hard"
 
@@ -261,14 +261,9 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 highlight RedundantSpaces ctermbg=red guibg=red 
 match RedundantSpaces /\s\+$/
 
-highlight Comment ctermbg=grey
-highlight Comment ctermfg=234
-
-
 map<silent> ,f :FZF<enter>
 
 nmap ; <Plug>(choosewin)
-
 
 " fix problems with uncommon shells (fish, xonsh) and plugins running commands
 " (neomake, ...)
