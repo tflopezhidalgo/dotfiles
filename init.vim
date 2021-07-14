@@ -1,3 +1,4 @@
+
 let vim_plug_just_installed = 0
 let vim_plug_path = expand('~/.config/nvim/autoload/plug.vim')
 
@@ -97,7 +98,6 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-
 " use 256 colors when possible
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
 	let &t_Co = 256
@@ -105,6 +105,7 @@ if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
 else
     colorscheme delek
 endif
+
 
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 
@@ -151,7 +152,6 @@ highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 " airline
-"
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'gruvbox'
 let g:airline#extensions#whitespace#enabled = 0
@@ -168,7 +168,6 @@ let g:airline#extensions#tabline#show_splits = 0       " disables the buffer nam
 let g:airline#extensions#tabline#show_tab_nr = 1       " disable tab numbers
 
 "gruvbox
-"
 let g:gruvbox_italic= 1
 let g:gruvbox_italicize_comments = 1
 let g:gruvbox_undercurl = 1
@@ -193,12 +192,12 @@ set termguicolors
 set cursorline
 set scrolloff=10
 set nowrap
-
+set re=0
+syntax on
 
 " Folding
 set foldmethod=indent
 set foldnestmax=99
-
 
 " Mappings
 imap jj <Esc>
@@ -219,9 +218,9 @@ map TT :tabnew
 map tt :exe "tabn ".g:lasttab<CR>
 
 " Moverse entre pestañas
-map bn :bn<CR>
-map bp :bp<CR>
-map bd :bd<CR>
+"map bn :bn<CR>
+"map bp :bp<CR>
+"map bd :bd<CR>
 
 " Mover y modificar pestañas
 map tm :tabm 
@@ -258,8 +257,17 @@ autocmd! BufWritePost * Neomake
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 "" mostrar extra whitespaces en rojo 
+
 highlight RedundantSpaces ctermbg=red guibg=red 
 match RedundantSpaces /\s\+$/
+
+highlight Comment ctermbg=grey
+highlight Comment ctermfg=234
+
+
+map<silent> ,f :FZF<enter>
+
+nmap ; <Plug>(choosewin)
 
 
 " fix problems with uncommon shells (fish, xonsh) and plugins running commands
