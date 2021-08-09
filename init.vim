@@ -17,8 +17,6 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-" md for us
-Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 
 " text object for indentation
 Plug 'michaeljsmith/vim-indent-object'
@@ -67,31 +65,25 @@ Plug 'joshdick/onedark.vim'
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" completion for vim (like coc-core)
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-" python completion language for deoplete engine (python)
-Plug 'zchee/deoplete-jedi', { 'do': ':UpdateRemotePlugins' }
-
-" completion, find references, etc for python
-Plug 'davidhalter/jedi-vim'
-
-""" under test
+""" python lang sv
+Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 
 "fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+
 call plug#end()
 
 " ============================================================================
 " Install plugins the first time vim runs
-
+"
 if vim_plug_just_installed
     echo "Installing Bundles, please ignore key map error messages"
     :PlugInstall
 endif
 
+" si fue compilado con +termguicolors
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -100,7 +92,7 @@ endif
 
 " use 256 colors when possible
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-	let &t_Co = 256
+	let t_Co = 256
     colorscheme gruvbox
 else
     colorscheme delek
@@ -115,21 +107,6 @@ let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 let g:neomake_python_flake8_maker = { 'args': ['--max-line-length=140', '--ignore=E731, E128, E127, E126'], }
 let g:neomake_python_enabled_makers = ['flake8']
-
-" Use deoplete.
-let g:deoplete#enable_at_startup = 0 
-let g:deoplete#enable_ignore_case = 1
-
-" Disable autocompletion (using deoplete instead)
-let g:jedi#completions_enabled = 0
-
-" All these mappings work only for python code:
-let g:jedi#goto_command = ',d'
-let g:jedi#usages_command = ',o'
-let g:jedi#goto_assignments_command = ',a'
-let g:jedi#use_splits_not_buffers = "right"
-nmap ,D :tab split<CR>:call jedi#goto()<CR>
-
 
 " Signify ------------------------------
 
@@ -173,12 +150,6 @@ let g:gruvbox_italicize_comments = 0
 let g:gruvbox_undercurl = 1
 let g:gruvbox_contrast_dark = "hard"
 
-"nerdtree
-"
-" TODO. spawn on cwd
-map ,t :NERDTreeFind<CR>
-map ,t :NERDTreeToggle<CR>
-
 " Basic config
 set completeopt+=preview
 set completeopt+=noinsert
@@ -187,21 +158,48 @@ set incsearch nohlsearch
 set directory^=$HOME/.config/nvim/tmp/
 set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
 set relativenumber number
-set background=dark
-set termguicolors
 set cursorline
-set scrolloff=10
+set scrolloff=15
 set nowrap
+" ignore case when searching
+set ignorecase
+
+set smartcase
 set re=0
 syntax on
 
-" Folding
-set foldmethod=indent
-set foldnestmax=99
+" show commands being typed
+set showcmd
 
-" Mappings
+"===== Mappings =====
+
+" Normal mode, gd - go to definition of word under cursor
+nmap <silent> ,d <Plug>(coc-definition)
+nmap <silent> ,t <Plug>(coc-type-definition)
+nmap <silent> ,i <Plug>(coc-implementation)
+nmap <silent> ,r <Plug>(coc-references)
+
+" jedi goto
+"nmap ,d :tab split<CR>:call jedi#goto()<CR>
+
+" Always use very magic regex mode when searching
+nnoremap / /\v
+vnoremap / /\v
+nnoremap ? ?\v
+
+" switch between pair of brackets / parenthesis, etc
+nnoremap <tab> %
+vnoremap <tab> %
+
+"nerdtree
+"
+" TODO. spawn on cwd
+map ,t :NERDTreeFind<CR>
+map ,t :NERDTreeToggle<CR>
+
 imap jj <Esc>
 map vs :vs
+map sp :sp
 map<silent> + :vertical res +5<cr>
 map<silent> - :vertical res -5<cr>
 
@@ -209,40 +207,31 @@ map<silent> - :vertical res -5<cr>
 nmap <leader>sn <plug>(signify-next-hunk)
 nmap <leader>sp <plug>(signify-prev-hunk)
 
-nmap  ñ  <Plug>(choosewin)
+nmap ñ <Plug>(choosewin)
+nmap ; <Plug>(choosewin)
 
-" save as sudo
-ca w!! w !sudo tee "%"
-
-map TT :tabnew 
-map tt :exe "tabn ".g:lasttab<CR>
-
-" Moverse entre pestañas
-"map bn :bn<CR>
-"map bp :bp<CR>
-"map bd :bd<CR>
-
-" Mover y modificar pestañas
-map tm :tabm 
-map ts :tab split<CR>
+" Moverse entre buffers
+map bn :bn<CR>
+map bp :bp<CR>
+map bd :bd<CR>
 
 map cp "+y 
 
 map @d Oimport pdb; pdb.set_trace()<Esc>
 
-" ============== Hooks =================== "
-
-autocmd FileType * exe "normal zR"
-autocmd VimEnter * wincmd l
+map<silent> ,f :FZF <enter>
 
 " nnoremap <expr> f &foldlevel ? 'zM' :'zR'
-" TODO: especificar py27
+
+"===== Hooks =====
+
 autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
 
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " limpiar espacios al final de los archivos
-autocmd BufWritePre *.js %s/\s\+$//e
+autocmd BufWritePre *.js* %s/\s\+$//e
+autocmd BufWritePre *.ts* %s/\s\+$//e
 autocmd BufWritePre *.py %s/\s\+$//e
 autocmd BufWritePre *.rb %s/\s\+$//e
 autocmd BufWritePre *.java %s/\s\+$//e
@@ -251,20 +240,11 @@ autocmd BufWritePre *.groovy %s/\s\+$//e
 " hooks para el linter
 autocmd! BufWritePost * Neomake
 
-" on python files set as default formatter autopep8
-
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+autocmd BufRead,BufNewFile *.js* set shiftwidth=2
+autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
 
 "" mostrar extra whitespaces en rojo 
-
 highlight RedundantSpaces ctermbg=red guibg=red 
 match RedundantSpaces /\s\+$/
 
-map<silent> ,f :FZF<enter>
-
-nmap ; <Plug>(choosewin)
-
-" fix problems with uncommon shells (fish, xonsh) and plugins running commands
-" (neomake, ...)
-set shell=/bin/sh 
+set shell=/bin/zsh
