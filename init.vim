@@ -17,37 +17,20 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-
 " text object for indentation
 Plug 'michaeljsmith/vim-indent-object'
-
-" syntax
-Plug 'sheerun/vim-polyglot'
 
 " asynchronous execution
 Plug 'neomake/neomake'
 
-"" barra de estado junto con sus temas
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
 "" árbol de directorios 
 Plug 'scrooloose/nerdtree'
-
-"" cantidad de matches que tuvimos en las búsquedas
-Plug 'vim-scripts/IndexedSearch' 
 
 " Cerrado de a pares de parentésis / llaves, etc
 Plug 'Townk/vim-autoclose'
 
 " elegir buffer 
 Plug 't9md/vim-choosewin'
-
-" highlight para pares de tags
-Plug 'valloric/MatchTagAlways'
-
-" Tagbar
-Plug 'preservim/tagbar'
 
 "" git wrapper
 Plug 'tpope/vim-fugitive'
@@ -60,7 +43,6 @@ Plug 'editorconfig/editorconfig-vim'
 
 " colors
 Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
 
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -72,16 +54,10 @@ Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+"" lua based ast
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 call plug#end()
-
-" ============================================================================
-" Install plugins the first time vim runs
-"
-if vim_plug_just_installed
-    echo "Installing Bundles, please ignore key map error messages"
-    :PlugInstall
-endif
 
 " si fue compilado con +termguicolors
 if exists('+termguicolors')
@@ -90,14 +66,7 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-" use 256 colors when possible
-if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-	let t_Co = 256
-    colorscheme gruvbox
-else
-    colorscheme delek
-endif
-
+colorscheme gruvbox
 
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 
@@ -128,48 +97,47 @@ highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 "  mode)
 let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
-" airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme = 'gruvbox'
-let g:airline#extensions#whitespace#enabled = 0
-
-let g:airline#extensions#tabline#enabled = 1           " enable airline tabline
-let g:airline#extensions#tabline#show_close_button = 0 " remove 'X' at the end of the tabline
-let g:airline#extensions#tabline#tabs_label = ''       " can put text here like BUFFERS to denote buffers (I clear it so nothing is shown)
-let g:airline#extensions#tabline#buffers_label = ''    " can put text here like TABS to denote tabs (I clear it so nothing is shown)
-let g:airline#extensions#tabline#fnamemod = ':t'       " disable file paths in the tab
-let g:airline#extensions#tabline#show_tab_count = 0    " dont show tab numbers on the right
-let g:airline#extensions#tabline#show_buffers = 1      " dont show buffers in the tabline
-let g:airline#extensions#tabline#tab_min_count = 2     " minimum of 2 tabs needed to display the tabline
-let g:airline#extensions#tabline#show_splits = 0       " disables the buffer name that displays on the right of the tabline
-let g:airline#extensions#tabline#show_tab_nr = 1       " disable tab numbers
-
 "gruvbox
-let g:gruvbox_italic= 1
+let g:gruvbox_italic= 0
 let g:gruvbox_italicize_comments = 0
 let g:gruvbox_undercurl = 1
 let g:gruvbox_contrast_dark = "hard"
+
+
+" fuzzyfinder
+"FuzzyFinder should ignore all files in .gitignore
+let ignorefile = ".gitignore"
+if filereadable(ignorefile)
+  let ignore = '\v\~$'
+  for line in readfile(ignorefile)
+    let line = substitute(line, '\.', '\\.', 'g')
+    let line = substitute(line, '\*', '.*', 'g')
+    let ignore .= '|^' . line
+  endfor
+
+  let g:fuf_coveragefile_exclude = ignore
+endif
+
 
 " Basic config
 set completeopt+=preview
 set completeopt+=noinsert
 set wildmode=longest,list
+set noswapfile
 set incsearch nohlsearch
 set directory^=$HOME/.config/nvim/tmp/
 set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
-set relativenumber number
-set cursorline
+set number
+set relativenumber 
 set scrolloff=15
 set nowrap
 " ignore case when searching
 set ignorecase
-
 set smartcase
-set re=0
-syntax on
 
 " show commands being typed
 set showcmd
+set background=dark
 
 "===== Mappings =====
 
@@ -194,12 +162,11 @@ vnoremap <tab> %
 "nerdtree
 "
 " TODO. spawn on cwd
-map ,t :NERDTreeFind<CR>
 map ,t :NERDTreeToggle<CR>
 
 imap jj <Esc>
-map vs :vs
-map sp :sp
+"map vs :vs
+"map sp :sp
 map<silent> + :vertical res +5<cr>
 map<silent> - :vertical res -5<cr>
 
@@ -211,9 +178,11 @@ nmap ñ <Plug>(choosewin)
 nmap ; <Plug>(choosewin)
 
 " Moverse entre buffers
-map bn :bn<CR>
-map bp :bp<CR>
-map bd :bd<CR>
+" ojo porque hace que la b se bloquee esperando 
+" ver si es un comando o el back
+" map bn :bn<CR>
+" map bp :bp<CR>
+" map bd :bd<CR>
 
 map cp "+y 
 
@@ -226,7 +195,6 @@ map<silent> ,f :FZF <enter>
 "===== Hooks =====
 
 autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
-
 autocmd TabLeave * let g:lasttab = tabpagenr()
 
 " limpiar espacios al final de los archivos
@@ -240,11 +208,33 @@ autocmd BufWritePre *.groovy %s/\s\+$//e
 " hooks para el linter
 autocmd! BufWritePost * Neomake
 
-autocmd BufRead,BufNewFile *.js* set shiftwidth=2
+autocmd BufRead,BufNewFile *.js* set shiftwidth=2 syntax=typescript
 autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
+autocmd BufRead,BufNewFile *.sql* set shiftwidth=2
 
 "" mostrar extra whitespaces en rojo 
 highlight RedundantSpaces ctermbg=red guibg=red 
 match RedundantSpaces /\s\+$/
+
+"" small detaisl on coloring
+highlight CursorLineNr guibg=None
+
+
+"" enable treesitter magic
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = {}, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = {},  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
 
 set shell=/bin/zsh
