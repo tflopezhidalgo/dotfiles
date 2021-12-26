@@ -3,6 +3,8 @@ alias g='git'
 alias repos='cd /var/git/'
 alias vim='nvim'
 alias vi='nvim'
+alias 'dc'='docker-compose'
+alias p='pnpm'
 
 
 getCurrentBranch() {
@@ -31,3 +33,4 @@ export PYTHONDONTWRITEBYTECODE=1
 
 export PNPM_HOME="/Users/pino/.nvm/versions/node/v14.17.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.11.0/node_modules/pnpm/bin"
 export PATH="$PNPM_HOME:$PATH"
+[ -f "/Users/pino/.ghcup/env" ] && source "/Users/pino/.ghcup/env" # ghcup-env

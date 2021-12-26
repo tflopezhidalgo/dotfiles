@@ -38,11 +38,16 @@ Plug 'tpope/vim-fugitive'
 " marca los diffs de git / hg en los laterales
 Plug 'mhinz/vim-signify'
 
-"" editor config (usar archivo de configuración para configurar vim)
-Plug 'editorconfig/editorconfig-vim'
-
 " colors
 Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'lifepillar/vim-solarized8'
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'srcery-colors/srcery-vim'
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'artanikin/vim-synthwave84'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -57,7 +62,13 @@ Plug 'junegunn/fzf.vim'
 "" lua based ast
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
+Plug 'tflopezhidalgo/vim-pipe'
+
+
 call plug#end()
+
+" this first setting decides in which order try to guess your current vcs
+let g:signify_vcs_list = ['git']
 
 " si fue compilado con +termguicolors
 if exists('+termguicolors')
@@ -66,7 +77,12 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+
 colorscheme gruvbox
+" colorscheme nightfly
+" colorscheme srcery
+" colorscheme gruvbox8_hard
+
 
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 
@@ -76,21 +92,6 @@ let g:neomake_python_python_maker = neomake#makers#ft#python#python()
 let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
 let g:neomake_python_flake8_maker = { 'args': ['--max-line-length=140', '--ignore=E731, E128, E127, E126'], }
 let g:neomake_python_enabled_makers = ['flake8']
-
-" Signify ------------------------------
-
-" this first setting decides in which order try to guess your current vcs
-" UPDATE it to reflect your preferences, it will speed up opening files
-let g:signify_vcs_list = ['git']
-
-" nicer colors
-highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
-highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
-highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
-highlight SignifySignAdd    cterm=bold ctermbg=237  ctermfg=119
-highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
-highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
-
 
 " Fix to let ESC work as espected with Autoclose plugin
 " (without this, when showing an autocompletion window, ESC won't leave insert
@@ -121,7 +122,6 @@ endif
 
 " Basic config
 set completeopt+=preview
-set completeopt+=noinsert
 set wildmode=longest,list
 set noswapfile
 set incsearch nohlsearch
@@ -138,6 +138,20 @@ set smartcase
 " show commands being typed
 set showcmd
 set background=dark
+set shell=/bin/zsh
+
+
+" FIXME: not showing colors properly
+highlight clear SignColumn
+
+" nicer colors
+highlight SignifySignAdd    cterm=bold ctermbg=none  ctermfg=119
+highlight DiffAdd           cterm=bold ctermbg=none ctermfg=119
+highlight DiffDelete        cterm=bold ctermbg=none ctermfg=167
+highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
+highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
+highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
+
 
 "===== Mappings =====
 
@@ -146,6 +160,7 @@ nmap <silent> ,d <Plug>(coc-definition)
 nmap <silent> ,t <Plug>(coc-type-definition)
 nmap <silent> ,i <Plug>(coc-implementation)
 nmap <silent> ,r <Plug>(coc-references)
+map e <Nop>
 
 " jedi goto
 "nmap ,d :tab split<CR>:call jedi#goto()<CR>
@@ -177,37 +192,38 @@ nmap ; <Plug>(choosewin)
 
 map cp "+y 
 
-map @d Oimport pdb; pdb.set_trace()<Esc>
-
 map<silent> ,f :FZF <enter>
+map<silent> ,a :Ag <enter>
 
 " get me out of terminal with default esc
 tmap jj <C-\><C-n>
 
-"===== Hooks =====
+" moving lines is my passion
+nnoremap <Up> :m .-2<CR>==
+nnoremap <Down> :m .+1<CR>==
 
-autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
-autocmd TabLeave * let g:lasttab = tabpagenr()
+" ===== Hooks =====
 
-" limpiar espacios al final de los archivos
-autocmd BufWritePre *.js* %s/\s\+$//e
-autocmd BufWritePre *.ts* %s/\s\+$//e
-autocmd BufWritePre *.py %s/\s\+$//e
-autocmd BufWritePre *.rb %s/\s\+$//e
-autocmd BufWritePre *.java %s/\s\+$//e
-autocmd BufWritePre *.groovy %s/\s\+$//e
-
-" hooks para el linter
-autocmd! BufWritePost * Neomake
-
-autocmd BufRead,BufNewFile *.js* set shiftwidth=2 syntax=typescript
-autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
-autocmd BufRead,BufNewFile *.sql* set shiftwidth=2
-autocmd BufRead,BufNewFile *.md* set wrap  "" want to be able to read full sentences
-
-augroup Terminal
-  au!
-  au TermOpen * let g:last_terminal_id = b:terminal_job_id
+augroup default
+    au!
+    autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
+    autocmd TabLeave * let g:lasttab = tabpagenr()
+    
+    " limpiar espacios al final de los archivos
+    autocmd BufWritePre *.js* %s/\s\+$//e
+    autocmd BufWritePre *.ts* %s/\s\+$//e
+    autocmd BufWritePre *.py %s/\s\+$//e
+    autocmd BufWritePre *.rb %s/\s\+$//e
+    autocmd BufWritePre *.java %s/\s\+$//e
+    autocmd BufWritePre *.groovy %s/\s\+$//e
+    
+    " hooks para el linter
+    autocmd! BufWritePost * Neomake
+    
+    autocmd BufRead,BufNewFile *.js* set shiftwidth=2 syntax=typescript
+    autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
+    autocmd BufRead,BufNewFile *.sql* set shiftwidth=2
+    autocmd BufRead,BufNewFile *.md* set wrap  "" want to be able to read full sentences
 augroup END
 
 
@@ -215,7 +231,7 @@ augroup END
 highlight RedundantSpaces ctermbg=red guibg=red 
 match RedundantSpaces /\s\+$/
 
-"" small detaisl on coloring
+"" small details on coloring
 highlight CursorLineNr guibg=None
 
 
@@ -236,30 +252,4 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-set shell=/bin/zsh
 
-" PIPE PLUGIN "
-"
-function! s:get_visual_selection()
-    " Dark magic to get current selected words
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
-    return join(lines, "\n")
-endfunction
-
-function! Pipe() range 
-    let data = s:get_visual_selection()
-    if matchend(data, "<cr>") == -1
-        echo "Agregando cr"
-        let data = data . "\<cr>"
-    endif
-    call chansend(g:last_terminal_id, data)
-endfunction
-
-vmap<silent> ll :call Pipe()<cr>
