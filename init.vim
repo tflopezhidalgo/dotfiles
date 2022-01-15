@@ -20,16 +20,13 @@ call plug#begin('~/.config/nvim/plugged')
 " text object for indentation
 Plug 'michaeljsmith/vim-indent-object'
 
-" asynchronous execution
-Plug 'neomake/neomake'
-
-"" árbol de directorios 
+"" árbol de directorios
 Plug 'scrooloose/nerdtree'
 
 " Cerrado de a pares de parentésis / llaves, etc
 Plug 'Townk/vim-autoclose'
 
-" elegir buffer 
+" elegir buffer
 Plug 't9md/vim-choosewin'
 
 "" git wrapper
@@ -40,20 +37,17 @@ Plug 'mhinz/vim-signify'
 
 " colors
 Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'lifepillar/vim-solarized8'
-Plug 'bluz71/vim-nightfly-guicolors'
-Plug 'srcery-colors/srcery-vim'
-Plug 'lifepillar/vim-gruvbox8'
-Plug 'artanikin/vim-synthwave84'
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+
+" Common languages
+" - coc-elixir"
+" - coc-flow"
+" - coc-json"
+" - coc-rust-analyzer"
+" - coc-tsserver"
+" - coc-python"
 
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-""" python lang sv
-Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 
 "fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -62,6 +56,7 @@ Plug 'junegunn/fzf.vim'
 "" lua based ast
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
+" lol
 Plug 'tflopezhidalgo/vim-pipe'
 
 
@@ -77,21 +72,9 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-
 colorscheme gruvbox
-" colorscheme nightfly
-" colorscheme srcery
-" colorscheme gruvbox8_hard
 
-
-let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
-
-" Le dice a vim que haga foco en la nueva ventana
-
-let g:neomake_python_python_maker = neomake#makers#ft#python#python()
-let g:neomake_python_flake8_maker = neomake#makers#ft#python#flake8()
-let g:neomake_python_flake8_maker = { 'args': ['--max-line-length=140', '--ignore=E731, E128, E127, E126'], }
-let g:neomake_python_enabled_makers = ['flake8']
+let NERDTreeIgnore = ['\.pyc$', '\.pyo$', 'node_modules']
 
 " Fix to let ESC work as espected with Autoclose plugin
 " (without this, when showing an autocompletion window, ESC won't leave insert
@@ -119,6 +102,9 @@ if filereadable(ignorefile)
   let g:fuf_coveragefile_exclude = ignore
 endif
 
+let g:fuf_coveragefile_exclude = '.\*node_modules.\*'
+let g:fuf_file_exclude = '\v\~$|\.o$|\.exe$|\.bak$|\.swp$|\.class$|.\*\.ts$'
+let g:fuf_dir_exclude = '\v.\*node_modules.\*'
 
 " Basic config
 set completeopt+=preview
@@ -128,7 +114,7 @@ set incsearch nohlsearch
 set directory^=$HOME/.config/nvim/tmp/
 set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
 set number
-set relativenumber 
+set relativenumber
 set scrolloff=15
 set nowrap
 " ignore case when searching
@@ -155,29 +141,21 @@ highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
 "===== Mappings =====
 
+let mapleader = ","
+
 " Normal mode, gd - go to definition of word under cursor
-nmap <silent> ,d <Plug>(coc-definition)
-nmap <silent> ,t <Plug>(coc-type-definition)
-nmap <silent> ,i <Plug>(coc-implementation)
-nmap <silent> ,r <Plug>(coc-references)
+nmap <silent> <leader>d <Plug>(coc-definition)
+nmap <silent> <leader>t <Plug>(coc-type-definition)
+nmap <silent> <leader>i <Plug>(coc-implementation)
+nmap <silent> <leader>r <Plug>(coc-references)
 map e <Nop>
-
-" jedi goto
-"nmap ,d :tab split<CR>:call jedi#goto()<CR>
-
-" Always use very magic regex mode when searching
-nnoremap / /\v
-vnoremap / /\v
-nnoremap ? ?\v
 
 " switch between pair of brackets / parenthesis, etc
 nnoremap <tab> %
 vnoremap <tab> %
 
 "nerdtree
-"
-" TODO. spawn on cwd
-map ,t :NERDTreeToggle<CR>
+map <leader>t :NERDTree<CR>
 
 imap jj <Esc>
 map<silent> + :vertical res +5<cr>
@@ -190,36 +168,25 @@ nmap <leader>sp <plug>(signify-prev-hunk)
 nmap ñ <Plug>(choosewin)
 nmap ; <Plug>(choosewin)
 
-map cp "+y 
+map cp "+y
 
-map<silent> ,f :FZF <enter>
-map<silent> ,a :Ag <enter>
+map<silent> <leader>f :FZF <enter>
+map<silent> <leader>a :Ag <enter>
 
 " get me out of terminal with default esc
 tmap jj <C-\><C-n>
-
-" moving lines is my passion
-nnoremap <Up> :m .-2<CR>==
-nnoremap <Down> :m .+1<CR>==
 
 " ===== Hooks =====
 
 augroup default
     au!
     autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
-    autocmd TabLeave * let g:lasttab = tabpagenr()
-    
-    " limpiar espacios al final de los archivos
-    autocmd BufWritePre *.js* %s/\s\+$//e
-    autocmd BufWritePre *.ts* %s/\s\+$//e
-    autocmd BufWritePre *.py %s/\s\+$//e
-    autocmd BufWritePre *.rb %s/\s\+$//e
-    autocmd BufWritePre *.java %s/\s\+$//e
-    autocmd BufWritePre *.groovy %s/\s\+$//e
-    
-    " hooks para el linter
-    autocmd! BufWritePost * Neomake
-    
+    autocmd FileType cpp setlocal formatprg=clang-format\ --style=google
+    autocmd FileType rust setlocal formatprg=rustfmt
+
+    " limpiar espacios al final de las lineas
+    autocmd BufWritePre * :%s/\s\+$//e
+
     autocmd BufRead,BufNewFile *.js* set shiftwidth=2 syntax=typescript
     autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
     autocmd BufRead,BufNewFile *.sql* set shiftwidth=2
@@ -227,8 +194,8 @@ augroup default
 augroup END
 
 
-"" mostrar extra whitespaces en rojo 
-highlight RedundantSpaces ctermbg=red guibg=red 
+"" mostrar extra whitespaces en rojo
+highlight RedundantSpaces ctermbg=red guibg=red
 match RedundantSpaces /\s\+$/
 
 "" small details on coloring
