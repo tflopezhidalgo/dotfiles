@@ -88,7 +88,6 @@ let g:gruvbox_undercurl = 1
 let g:gruvbox_contrast_dark = "hard"
 
 
-" fuzzyfinder
 "FuzzyFinder should ignore all files in .gitignore
 let ignorefile = ".gitignore"
 if filereadable(ignorefile)
@@ -99,12 +98,8 @@ if filereadable(ignorefile)
     let ignore .= '|^' . line
   endfor
 
-  let g:fuf_coveragefile_exclude = ignore
+  let g:fuf_coveragefile_exclude = ignore . '|.\*node_modules.\*'
 endif
-
-let g:fuf_coveragefile_exclude = '.\*node_modules.\*'
-let g:fuf_file_exclude = '\v\~$|\.o$|\.exe$|\.bak$|\.swp$|\.class$|.\*\.ts$'
-let g:fuf_dir_exclude = '\v.\*node_modules.\*'
 
 " Basic config
 set completeopt+=preview
@@ -117,6 +112,7 @@ set number
 set relativenumber
 set scrolloff=15
 set nowrap
+
 " ignore case when searching
 set ignorecase
 set smartcase
@@ -158,6 +154,7 @@ vnoremap <tab> %
 map <leader>t :NERDTree<CR>
 
 imap jj <Esc>
+
 map<silent> + :vertical res +5<cr>
 map<silent> - :vertical res -5<cr>
 
@@ -170,7 +167,7 @@ nmap ; <Plug>(choosewin)
 
 map cp "+y
 
-map<silent> <leader>f :FZF <enter>
+map<silent> <leader>f :GFiles <enter>
 map<silent> <leader>a :Ag <enter>
 
 " get me out of terminal with default esc
