@@ -87,7 +87,6 @@ let g:gruvbox_italicize_comments = 0
 let g:gruvbox_undercurl = 1
 let g:gruvbox_contrast_dark = "hard"
 
-
 "FuzzyFinder should ignore all files in .gitignore
 let ignorefile = ".gitignore"
 if filereadable(ignorefile)
@@ -108,8 +107,7 @@ set noswapfile
 set incsearch nohlsearch
 set directory^=$HOME/.config/nvim/tmp/
 set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
-set number
-set relativenumber
+set number relativenumber
 set scrolloff=15
 set nowrap
 
@@ -122,7 +120,6 @@ set showcmd
 set background=dark
 set shell=/bin/zsh
 
-
 " FIXME: not showing colors properly
 highlight clear SignColumn
 
@@ -134,6 +131,11 @@ highlight DiffChange        cterm=bold ctermbg=none ctermfg=227
 highlight SignifySignDelete cterm=bold ctermbg=237  ctermfg=167
 highlight SignifySignChange cterm=bold ctermbg=237  ctermfg=227
 
+function OpenFileTree()
+    "" if I'm opening a existing file look for it in
+    "" file tree, otherwise show current CWD
+    execute (expand('%:p') != '') ? 'NERDTreeFind' : 'NERDTree'
+endfunction
 
 "===== Mappings =====
 
@@ -151,7 +153,7 @@ nnoremap <tab> %
 vnoremap <tab> %
 
 "nerdtree
-map <leader>t :NERDTree<CR>
+map <leader>t :call OpenFileTree()<CR>
 
 imap jj <Esc>
 

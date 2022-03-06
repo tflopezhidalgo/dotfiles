@@ -103,20 +103,22 @@ source $ZSH/oh-my-zsh.sh
 alias v='nvim'
 alias g='git'
 alias p='pnpm'
+alias r='repos'
 alias dc='docker-compose'
 alias grep='grep --color'
 alias less='less -R'
 
-function r {
+function repos {
     repo=/var/git/$1
-    echo "Accessing... $repo"
 
     if [ ! -e $repo ]; then
-        echo "Repo doesn't exist"
+        echo "Repo $repo doesn't exist"
+        return 1
     fi
     cd $repo
 }
 
+# End of lines added by compinstall
 # --- Not used ---
 #
 # getCurrentBranch() {
@@ -135,8 +137,6 @@ function r {
 # PS1="(%F{yellow}%~%f)\$(getCurrentBranch)%F{cyan} ⚡ %f"
 
 setopt prompt_subst
-
-# Lattice
 
 # Envvars
 export NVM_DIR="$HOME/.nvm"
