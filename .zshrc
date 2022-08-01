@@ -107,6 +107,8 @@ alias r='repos'
 alias dc='docker-compose'
 alias grep='grep --color'
 alias less='less -R'
+alias k='kubectl'
+alias ktool="node /var/git/lattice/infrastructure/ktool/index.js"
 
 function repos {
     repo=/var/git/$1
@@ -118,34 +120,21 @@ function repos {
     cd $repo
 }
 
-# End of lines added by compinstall
-# --- Not used ---
-#
-# getCurrentBranch() {
-#     if [ -z "$(git branch 2>/dev/null)" ]; then
-#         echo ""
-#     else
-#         CHANGES=''
-#         if [ "$(git status --porcelain)" ]; then
-#             CHANGES+='(%F{red}✘%f)'
-#         fi
-#         echo " (on: %F{magenta}$(git branch 2>/dev/null | command grep '^*' | colrm 1 2 )%f)$CHANGES"
-#     fi
-# }
-#
-# Chars repository ⚡
-# PS1="(%F{yellow}%~%f)\$(getCurrentBranch)%F{cyan} ⚡ %f"
-
 setopt prompt_subst
 
-# Envvars
+# NVM
 export NVM_DIR="$HOME/.nvm"
-
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh" # This loads nvm
 
+# PNPM
 export PNPM_HOME="/Users/pino/.nvm/versions/node/v14.17.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.11.0/node_modules/pnpm/bin"
 export PATH="$PNPM_HOME:$PATH"
 
+# Particle
+export PARTICLE_PATH="/Users/pino/.vscode/extensions/particle.particle-vscode-core-1.14.13/src/cli/bin/darwin/amd64"
+export PATH="$PARTICLE_PATH:$PATH"
+
+# GHCI
 [ -f "/Users/pino/.ghcup/env" ] && source "/Users/pino/.ghcup/env" # ghcup-env
 
 # Bun completions
@@ -154,3 +143,12 @@ export PATH="$PNPM_HOME:$PATH"
 # Bun
 export BUN_INSTALL="/Users/pino/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export DOCKER_HOST=unix:///Users/pino/.colima/docker.sock
+
+# Bat
+export BAT_PAGER="less -R"
+export BAT_THEME="ansi"
+
+# AWS profile
+export AWS_PROFILE="lattice"
+export AWS_REGION="us-west-2"

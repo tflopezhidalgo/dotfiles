@@ -56,7 +56,7 @@ Plug 'junegunn/fzf.vim'
 "" lua based ast
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
-" lol
+" Vim pipe
 Plug 'tflopezhidalgo/vim-pipe'
 
 
@@ -89,6 +89,7 @@ let g:gruvbox_contrast_dark = "hard"
 
 "FuzzyFinder should ignore all files in .gitignore
 let ignorefile = ".gitignore"
+
 if filereadable(ignorefile)
   let ignore = '\v\~$'
   for line in readfile(ignorefile)
@@ -97,6 +98,7 @@ if filereadable(ignorefile)
     let ignore .= '|^' . line
   endfor
 
+  " Ignore node_modules as well.
   let g:fuf_coveragefile_exclude = ignore . '|.\*node_modules.\*'
 endif
 
@@ -146,13 +148,12 @@ nmap <silent> <leader>d <Plug>(coc-definition)
 nmap <silent> <leader>t <Plug>(coc-type-definition)
 nmap <silent> <leader>i <Plug>(coc-implementation)
 nmap <silent> <leader>r <Plug>(coc-references)
-map e <Nop>
 
 " switch between pair of brackets / parenthesis, etc
 nnoremap <tab> %
 vnoremap <tab> %
 
-"nerdtree
+" nerdtree
 map <leader>t :call OpenFileTree()<CR>
 
 imap jj <Esc>
@@ -186,7 +187,7 @@ augroup default
     " limpiar espacios al final de las lineas
     autocmd BufWritePre * :%s/\s\+$//e
 
-    autocmd BufRead,BufNewFile *.js* set shiftwidth=2 syntax=typescript
+    autocmd BufRead,BufNewFile *.js* set shiftwidth=2
     autocmd BufRead,BufNewFile *.ts* set shiftwidth=2
     autocmd BufRead,BufNewFile *.sql* set shiftwidth=2
     autocmd BufRead,BufNewFile *.md* set wrap  "" want to be able to read full sentences
@@ -204,7 +205,7 @@ highlight CursorLineNr guibg=None
 "" enable treesitter magic
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ignore_install = {}, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
@@ -217,5 +218,3 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
-
-
