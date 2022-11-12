@@ -1,0 +1,21 @@
+# This is Git's per-user configuration file.
+
+[user]
+# Please adapt and uncomment the following lines:
+name = Tomás Lopez Hidalgo
+email = tflopezhidalgo@gmail.com
+
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+    ll = pull
+    sh = push
+    b = branch
+
+[diff]
+	tool = vimdiff
+
+[core]
+	editor = nvim
