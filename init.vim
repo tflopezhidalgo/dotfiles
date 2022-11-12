@@ -29,9 +29,6 @@ Plug 'Townk/vim-autoclose'
 " elegir buffer
 Plug 't9md/vim-choosewin'
 
-"" git wrapper
-Plug 'tpope/vim-fugitive'
-
 " marca los diffs de git / hg en los laterales
 Plug 'mhinz/vim-signify'
 
@@ -43,8 +40,9 @@ Plug 'morhetz/gruvbox'
 " - coc-flow"
 " - coc-json"
 " - coc-rust-analyzer"
-" - coc-tsserver"
 " - coc-python"
+" - coc-tsserver"
+" - coc-eslint
 
 "" autocompletion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -79,7 +77,7 @@ let NERDTreeIgnore = ['\.pyc$', '\.pyo$', 'node_modules']
 " Fix to let ESC work as espected with Autoclose plugin
 " (without this, when showing an autocompletion window, ESC won't leave insert
 "  mode)
-let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
+" let g:AutoClosePumvisible = {"ENTER": "\<C-Y>", "ESC": "\<ESC>"}
 
 "gruvbox
 let g:gruvbox_italic= 0
@@ -112,6 +110,8 @@ set tabstop=4 softtabstop=0 expandtab shiftwidth=0 smarttab
 set number relativenumber
 set scrolloff=15
 set nowrap
+set autoindent
+set smartindent
 
 " ignore case when searching
 set ignorecase
@@ -123,7 +123,7 @@ set background=dark
 set shell=/bin/zsh
 
 " FIXME: not showing colors properly
-highlight clear SignColumn
+" highlight clear SignColumn
 
 " nicer colors
 highlight SignifySignAdd    cterm=bold ctermbg=none  ctermfg=119
@@ -183,6 +183,7 @@ augroup default
     autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
     autocmd FileType cpp setlocal formatprg=clang-format\ --style=google
     autocmd FileType rust setlocal formatprg=rustfmt
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 
     " limpiar espacios al final de las lineas
     autocmd BufWritePre * :%s/\s\+$//e
@@ -207,6 +208,13 @@ lua <<EOF
 require'nvim-treesitter.configs'.setup {
   -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   ignore_install = {}, -- List of parsers to ignore installing
+  incremental_selection = {
+    enable = true
+  },
+  indent = {
+    -- experimental feature by the moment. Let's just turn it off
+    enable = false
+  },
   highlight = {
     enable = true,              -- false will disable the whole extension
     disable = {},  -- list of language that will be disabled
@@ -218,3 +226,21 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+" Best of coc plugins
+let g:coc_global_extensions = [
+    \ 'coc-json',
+    \ 'coc-rust-analyzer',
+    \ 'coc-python',
+    \ 'coc-tsserver',
+    \ 'coc-eslint',
+    \ 'coc-vimlsp',
+    \ 'coc-flow',
+    \ 'coc-clojure',
+    \ ]
+
+"let g:coc_filetype_map = {
+"    \ 'html.swig': 'html',
+"	\ 'wxss': 'css',
+"	\ }
+

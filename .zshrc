@@ -72,7 +72,6 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-    git
     zsh-autosuggestions
 )
 
@@ -126,16 +125,12 @@ setopt prompt_subst
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh" # This loads nvm
 
-# PNPM
-export PNPM_HOME="/Users/pino/.nvm/versions/node/v14.17.2/pnpm-global/5/node_modules/.pnpm/pnpm@6.11.0/node_modules/pnpm/bin"
-export PATH="$PNPM_HOME:$PATH"
-
-# Particle
-export PARTICLE_PATH="/Users/pino/.vscode/extensions/particle.particle-vscode-core-1.14.13/src/cli/bin/darwin/amd64"
-export PATH="$PARTICLE_PATH:$PATH"
-
 # GHCI
 [ -f "/Users/pino/.ghcup/env" ] && source "/Users/pino/.ghcup/env" # ghcup-env
+
+# pnpm
+export PNPM_HOME="/Users/pino/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
 
 # Bun completions
 [ -s "/Users/pino/.bun/_bun" ] && source "/Users/pino/.bun/_bun"
@@ -143,6 +138,8 @@ export PATH="$PARTICLE_PATH:$PATH"
 # Bun
 export BUN_INSTALL="/Users/pino/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Colima
 export DOCKER_HOST=unix:///Users/pino/.colima/docker.sock
 
 # Bat
@@ -152,3 +149,12 @@ export BAT_THEME="ansi"
 # AWS profile
 export AWS_PROFILE="lattice"
 export AWS_REGION="us-west-2"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/pino/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/pino/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/pino/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/pino/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
