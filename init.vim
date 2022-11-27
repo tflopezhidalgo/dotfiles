@@ -149,6 +149,18 @@ nmap <silent> <leader>t <Plug>(coc-type-definition)
 nmap <silent> <leader>i <Plug>(coc-implementation)
 nmap <silent> <leader>r <Plug>(coc-references)
 
+" Best of coc plugins
+let g:coc_global_extensions = [
+    \ 'coc-json',
+    \ 'coc-rust-analyzer',
+    \ 'coc-python',
+    \ 'coc-tsserver',
+    \ 'coc-eslint',
+    \ 'coc-vimlsp',
+    \ 'coc-flow',
+    \ 'coc-clojure',
+    \ ]
+
 " switch between pair of brackets / parenthesis, etc
 nnoremap <tab> %
 vnoremap <tab> %
@@ -173,6 +185,8 @@ map cp "+y
 map<silent> <leader>f :GFiles <enter>
 map<silent> <leader>a :Ag <enter>
 
+nmap <leader>rr :source $HOME/.config/nvim/init.vim <cr>
+
 " get me out of terminal with default esc
 tmap jj <C-\><C-n>
 
@@ -195,6 +209,15 @@ augroup default
 augroup END
 
 
+autocmd BufRead * call s:set_hidden()
+function s:set_hidden()
+    if empty(&buftype) "most explorer plugins have buftype=nofile
+        setlocal bufhidden=delete
+    endif
+endfunction
+
+" ==================
+
 "" mostrar extra whitespaces en rojo
 highlight RedundantSpaces ctermbg=red guibg=red
 match RedundantSpaces /\s\+$/
@@ -205,42 +228,25 @@ highlight CursorLineNr guibg=None
 
 "" enable treesitter magic
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = {}, -- List of parsers to ignore installing
-  incremental_selection = {
-    enable = true
-  },
-  indent = {
-    -- experimental feature by the moment. Let's just turn it off
-    enable = false
-  },
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    disable = {},  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+    require'nvim-treesitter.configs'.setup {
+      -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+      ignore_install = {}, -- List of parsers to ignore installing
+      incremental_selection = {
+        enable = true
+      },
+      indent = {
+        -- experimental feature by the moment. Let's just turn it off
+        enable = false
+      },
+      highlight = {
+        enable = true,     -- false will disable the whole extension
+        disable = {},      -- list of language that will be disabled
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+      },
+    }
 EOF
-
-" Best of coc plugins
-let g:coc_global_extensions = [
-    \ 'coc-json',
-    \ 'coc-rust-analyzer',
-    \ 'coc-python',
-    \ 'coc-tsserver',
-    \ 'coc-eslint',
-    \ 'coc-vimlsp',
-    \ 'coc-flow',
-    \ 'coc-clojure',
-    \ ]
-
-"let g:coc_filetype_map = {
-"    \ 'html.swig': 'html',
-"	\ 'wxss': 'css',
-"	\ }
 
