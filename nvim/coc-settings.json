@@ -1,4 +1,7 @@
 {
   "tsserver.log": "verbose",
-  "tsserver.trace.server": "verbose"
+  "tsserver.trace.server": "verbose",
+
+  // Use rust-analyzer from VSCode
+  "rust-analyzer.server.path": "/Users/tomas/.vscode/extensions/rust-lang.rust-analyzer-0.3.1524-darwin-arm64/server/rust-analyzer"
 }
