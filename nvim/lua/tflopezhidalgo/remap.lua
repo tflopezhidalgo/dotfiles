@@ -6,7 +6,8 @@ vim.keymap.set('i', 'jj', '<esc>')
 vim.keymap.set('n', '<tab>', '%', { remap = false })
 vim.keymap.set('v', '<tab>', '%', { remap = false })
 
-vim.keymap.set('n', 'cp', '"+y', { remap = false })
+vim.keymap.set('n', 'cp', [[ "+y ]])
+vim.keymap.set('v', 'cp', [[ "+y ]])
 
 vim.keymap.set('n', '+', ':vertical res +5<cr>', { silent = true })
 vim.keymap.set('n', '-', ':vertical res -5<cr>', { silent = true })

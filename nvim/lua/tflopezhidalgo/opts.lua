@@ -4,6 +4,9 @@ vim.opt.swapfile = false
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
 
+vim.opt.backup = false
+vim.opt.writebackup = false
+
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 0
@@ -20,3 +23,5 @@ vim.opt.smartcase = true
 vim.opt.showcmd = true
 vim.opt.background = "dark"
 vim.opt.shell = "/bin/zsh"
+vim.opt.updatetime = 300
+
