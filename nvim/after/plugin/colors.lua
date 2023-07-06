@@ -1,4 +1,10 @@
+vim.api.nvim_exec([[
+    let g:solarized_termcolors=256
+]], true)
+
 vim.cmd.colorscheme('gruvbox')
+-- vim.cmd.colorscheme('solarized')
+-- vim.cmd.colorscheme('minimalist')
 
 vim.g.gruvbox_italic = 0
 vim.g.gruvbox_italicize_comments = 0

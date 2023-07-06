@@ -1,7 +1,15 @@
 {
+
+  // TS Server
+
   "tsserver.log": "verbose",
   "tsserver.trace.server": "verbose",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.format.placeOpenBraceOnNewLineForControlBlocks": true,
 
-  // Use rust-analyzer from VSCode
-  "rust-analyzer.server.path": "/Users/tomas/.vscode/extensions/rust-lang.rust-analyzer-0.3.1524-darwin-arm64/server/rust-analyzer"
+  // Rust
+
+  "rust-analyzer.server.path": "$HOME/.vscode/extensions/rust-lang.rust-analyzer-0.3.1524-darwin-arm64/server/rust-analyzer"
 }

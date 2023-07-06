@@ -1,6 +1,8 @@
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+
 vim.opt.swapfile = false
+
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
 

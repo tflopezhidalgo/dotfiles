@@ -12,10 +12,7 @@ vim.keymap.set('v', 'cp', [[ "+y ]])
 vim.keymap.set('n', '+', ':vertical res +5<cr>', { silent = true })
 vim.keymap.set('n', '-', ':vertical res -5<cr>', { silent = true })
 
-vim.keymap.set('n', '<leader>rr', ':source $HOME/.config/nvim/init.lua <enter>', { silent = true })
+vim.keymap.set('n', '<leader>rr', ':source $HOME/.config/nvim/init.lua <enter>', { silent = false })
 
 --  copy relative path
 vim.keymap.set('n', 'cr', ':let @+ = expand("%:~:.")<cr>', { silent = true })
-
--- get me out of terminal with default esc
--- tmap jj <C-\><C-n>

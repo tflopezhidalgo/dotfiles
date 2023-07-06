@@ -1,6 +1,6 @@
 -- TODO: Pending to be migrated.
 
-vim.api.nvim_exec([[ 
+vim.api.nvim_exec([[
 let vim_plug_just_installed = 0
 let vim_plug_path = expand('~/.config/nvim/autoload/plug.vim')
 
@@ -30,13 +30,15 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
 Plug('michaeljsmith/vim-indent-object')
 
 -- Cerrado de a pares de parentésis / llaves, etc
-Plug('Townk/vim-autoclose')
+Plug('jiangmiao/auto-pairs')
 
 -- Change buffers quickly
 Plug('t9md/vim-choosewin')
 
 -- Colors
 Plug('morhetz/gruvbox')
+Plug('altercation/vim-colors-solarized');
+Plug('dikiaap/minimalist');
 
 -- marca los diffs de git / hg en los laterales
 Plug('mhinz/vim-signify')
@@ -58,3 +60,4 @@ Plug('nvim-treesitter/nvim-treesitter', {['do'] = vim.fn['TSUpdate'] }) -- We re
 Plug('tflopezhidalgo/vim-pipe')
 
 vim.call('plug#end')
+

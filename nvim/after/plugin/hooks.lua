@@ -9,7 +9,7 @@ augroup default
     autocmd FileType python setlocal formatprg=black\ -q\ -t\ py27\ -
     autocmd FileType cpp setlocal formatprg=clang-format\ --style=google
     autocmd FileType rust setlocal formatprg=rustfmt
-    autocmd FileType typescript,json setlocal formatexpr=CocAction('formatSelected')
+    autocmd FileType typescript,json setlocal
 
     " limpiar espacios al final de las lineas
     autocmd BufWritePre * :%s/\s\+$//e
