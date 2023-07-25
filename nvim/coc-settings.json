@@ -4,6 +4,7 @@
 
   "tsserver.log": "verbose",
   "tsserver.trace.server": "verbose",
+  "tsserver.maxTsServerMemory": 5072,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": true,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,

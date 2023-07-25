@@ -32,13 +32,16 @@ Plug('michaeljsmith/vim-indent-object')
 -- Cerrado de a pares de parentésis / llaves, etc
 Plug('jiangmiao/auto-pairs')
 
+
 -- Change buffers quickly
 Plug('t9md/vim-choosewin')
 
 -- Colors
 Plug('morhetz/gruvbox')
 Plug('altercation/vim-colors-solarized');
+Plug('Yazeed1s/minimal.nvim')
 Plug('dikiaap/minimalist');
+Plug('neanias/everforest-nvim')
 
 -- marca los diffs de git / hg en los laterales
 Plug('mhinz/vim-signify')
