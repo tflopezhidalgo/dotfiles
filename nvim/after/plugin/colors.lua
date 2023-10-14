@@ -1,13 +1,9 @@
-vim.api.nvim_exec([[
-    let g:solarized_termcolors = 256
-]], true)
-
-vim.g.everforest_background = 'hard'
-vim.g.everforest_current_word = 'underline'
-
-vim.cmd.colorscheme('gruvbox')
---
+-- vim.g.everforest_background = 'hard'
+-- vim.g.everforest_current_word = 'underline'
 -- vim.cmd.colorscheme('everforest')
+
+vim.g.gruvbox_sign_column = 'bg0'
+vim.cmd.colorscheme('gruvbox')
 
 
 -- vim.cmd.colorscheme('solarized')
@@ -19,15 +15,18 @@ vim.cmd.colorscheme('gruvbox')
 -- vim.g.gruvbox_contrast_dark = 'hard'
 
 --  FIXME: not showing colors properly
--- vim.api.nvim_exec([[
---     " FIXME: not showing colors properly
---     highlight clear SignColumn
--- ]], true)
---
+vim.api.nvim_exec([[
+    " FIXME: not showing colors properly
+    highlight clear SignColumn
+]], true)
+
+
 vim.api.nvim_exec([[
     match RedundantSpaces /\s\+$/
 ]], true)
 
+
+-- highlight clear SignColumn
 vim.cmd.highlight({ "RedundantSpaces", "ctermbg=red", "guibg=red" })
 vim.cmd.highlight({ "CursorLineNr", "guibg=none" })
 vim.cmd.highlight({ "Normal", "guibg=none", "ctermbg=none" })
@@ -40,3 +39,4 @@ vim.cmd.highlight({ "NormalNC", "guibg=none", "ctermbg=none" })
 -- vim.cmd.highlight({ "DiffChange"        , "cterm=bold", "ctermbg=none", "ctermfg=227" })
 -- vim.cmd.highlight({ "SignifySignDelete" , "cterm=bold", "ctermbg=237",  "ctermfg=167" })
 -- vim.cmd.highlight({ "SignifySignChange" , "cterm=bold", "ctermbg=237",  "ctermfg=227" })
+

@@ -24,4 +24,7 @@ endfunction
 
 autocmd BufRead * call s:set_hidden()
 
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+
 ]], true)

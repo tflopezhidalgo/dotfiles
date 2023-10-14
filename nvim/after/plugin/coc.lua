@@ -13,7 +13,7 @@ keyset('n', '<leader>q',  '<Plug>(coc-codeaction-selected)', { silent = true })
 keyset('v', '<leader>ff', '<Plug>(coc-format-selected)', { silent = true })
 keyset('n', '<leader>re', '<Plug>(coc-codeaction-refactor)', { silent = true })
 keyset('x', '<leader>rr', '<Plug>(coc-codeaction-refactor-selected)', { silent = true })
-keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
+keyset("n", "<leader>rn", "<Plug>(coc-rename)", { silent = true })
 keyset("n", "<leader>cl", "<Plug>(coc-codelens-action)", { nowait = true })
 
 keyset('n', '<leader>h', ":call CocActionAsync('doHover')<cr>")

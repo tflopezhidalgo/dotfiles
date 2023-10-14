@@ -2,8 +2,7 @@
 
 [user]
 # Please adapt and uncomment the following lines:
-name = Tomás Lopez Hidalgo
-email = tflopezhidalgo@gmail.com
+	name = tflopezhidalgo
 
 [alias]
 	co = checkout
@@ -19,3 +18,9 @@ email = tflopezhidalgo@gmail.com
 
 [core]
 	editor = nvim
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
